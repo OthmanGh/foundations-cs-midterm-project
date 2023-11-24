@@ -30,9 +30,9 @@ def isUrlValid(url):
     
     return True
 
-# function -> openTab : takes a single parameter which will hold user inputed tabs
+# function -> openTab : takes a single parameter which will hold user entered tabs
 # parameter -> tabs : a dictionary holds tabs titles associated with URLs
-def openTab(tabs):
+def openTab(tabs, tabsOrder):
     
     title = input("\nenter tab title : ") # enter tab's title
     
@@ -40,18 +40,19 @@ def openTab(tabs):
         url = input("enter URL of the website : ")
         if isUrlValid(url): # check if url is valid
             tabs[title] = url # add title associated with url to tabs dictionary
-            print(tabs)
+            tabsOrder.append(title)
     else:
         print("\ninvalid title name - Try Again")
 
+
 # function -> executeMenuOption : takes a single parameter, depending on the provided option value, a corresponding function will be called to deliver specific functionality.. 
 # parameter -> option : represent user chosen option on menu interface
-def executeMenuOption(option, tabs, openedTabsOrder):
+def executeMenuOption(option, tabs, tabsOrder):
 
     # creating our data structure here will lead to be re-initialized every time function is called so we'll loose our data
 
     if option == 1:
-        openTab(tabs)
+        openTab(tabs, tabsOrder)
     elif option == 2:
         print("\nClosing Tab....")
     elif option == 3:
@@ -76,12 +77,12 @@ def executeMenuOption(option, tabs, openedTabsOrder):
 def Menu():
     exit_program = False # exit_program will severs as a flag variable 
 
-    # Main Data Structure : 
+    # Main Data Structures : 
     # Dictionary to store tabs which consists of titles attached to URLs (tabs)
-    # list to maintain the order of open tabs (openedTabsOrder)
+    # List to maintain the order of open tabs (tabsOrder) which contain titles of opened tabs in order (depend on the way been inputed)
 
     tabs = {}
-    openedTabsOrder = []
+    tabsOrder = []
 
     # continue looping while exit_program is false
     while not exit_program:
@@ -92,7 +93,11 @@ def Menu():
         except ValueError: # if inputed data is not a number
             print("\ninvalid input a number must be entered - Try Again")
 
-        executeMenuOption(chosenOption, tabs, openedTabsOrder) 
+        executeMenuOption(chosenOption, tabs, tabsOrder) 
+
+    
+        print(tabs)
+        print(tabsOrder)
 
 Menu()
 
