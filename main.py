@@ -24,6 +24,8 @@ def Menu():
         except ValueError:
             print("\ninvalid input a number must be entered - Try Again")
 
+        print(options)
+
 Menu()
 
 
