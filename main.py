@@ -1,7 +1,8 @@
 # function -> openTab : takes a single parameter which will hold user inputed tabs
-# def openTab(tabs):
-#     title = input("enter tab title : ")
-
+def openTab(tabs):
+    title = input("\nenter tab title : ")
+    url = input("enter URL of the website : ")
+    tabs[title] = url
 
 # function -> renderUserInterFace : takes no parameter, responsible for displaying menu options for the user
 def renderUserInterfaceOptions():
@@ -28,8 +29,8 @@ def executeMenuOption(option):
     openedTabsOrder = []
 
     if option == 1:
-        #openTab(tabs)
-        print("\nOpening Tab....")
+        openTab(tabs)
+        print(tabs)
     elif option == 2:
         print("\nClosing Tab....")
     elif option == 3:
