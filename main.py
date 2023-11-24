@@ -1,9 +1,3 @@
-# function -> openTab : takes a single parameter which will hold user inputed tabs
-def openTab(tabs):
-    title = input("\nenter tab title : ")
-    url = input("enter URL of the website : ")
-    tabs[title] = url
-
 # function -> renderUserInterFace : takes no parameter, responsible for displaying menu options for the user
 def renderUserInterfaceOptions():
     print("\n     1. Open Tab")
@@ -16,21 +10,48 @@ def renderUserInterfaceOptions():
     print("     8. Import Tabs")
     print("     9. Exit\n") 
 
+# function -> isTitleValid : check if user entered tab's title is valid based on certain a conditions
+# parameter -> title : user entered tab's title
+def isTitleValid(title):
+    if len(title) < 2: # at least contain 3 letters
+        return False
+    
+    for char in title: # Time Complexity : O(n), n length of title
+        if char.isdigit(): # should not contain any digits
+            return False
 
-# function -> executeMenuOption : takes a single parameter which represent user inputed option
-# Depending on the provided option value, a corresponding function will be called to deliver specific functionality.. 
+    return True
 
-def executeMenuOption(option):
-    # Main Data Structure : 
-    # Dictionary to store tabs which consists of titles attached to URLs (tabs)
-    # list to maintain the order of open tabs (openedTabsOrder)
+# function -> isUrlValid : since we are not asked to validate urls, this maybe handled later
+# parameter : user entered url
+def isUrlValid(url):
+    if len(url) < 5:
+        return False
+    
+    return True
 
-    tabs = {}
-    openedTabsOrder = []
+# function -> openTab : takes a single parameter which will hold user inputed tabs
+# parameter -> tabs : a dictionary holds tabs titles associated with URLs
+def openTab(tabs):
+    
+    title = input("\nenter tab title : ") # enter tab's title
+    
+    if isTitleValid(title): # check if tab's title is valid
+        url = input("enter URL of the website : ")
+        if isUrlValid(url): # check if url is valid
+            tabs[title] = url # add title associated with url to tabs dictionary
+            print(tabs)
+    else:
+        print("\ninvalid title name - Try Again")
+
+# function -> executeMenuOption : takes a single parameter, depending on the provided option value, a corresponding function will be called to deliver specific functionality.. 
+# parameter -> option : represent user chosen option on menu interface
+def executeMenuOption(option, tabs, openedTabsOrder):
+
+    # creating our data structure here will lead to be re-initialized every time function is called so we'll loose our data
 
     if option == 1:
         openTab(tabs)
-        print(tabs)
     elif option == 2:
         print("\nClosing Tab....")
     elif option == 3:
@@ -55,6 +76,13 @@ def executeMenuOption(option):
 def Menu():
     exit_program = False # exit_program will severs as a flag variable 
 
+    # Main Data Structure : 
+    # Dictionary to store tabs which consists of titles attached to URLs (tabs)
+    # list to maintain the order of open tabs (openedTabsOrder)
+
+    tabs = {}
+    openedTabsOrder = []
+
     # continue looping while exit_program is false
     while not exit_program:
         renderUserInterfaceOptions() # display menu option
@@ -64,9 +92,10 @@ def Menu():
         except ValueError: # if inputed data is not a number
             print("\ninvalid input a number must be entered - Try Again")
 
-        executeMenuOption(chosenOption) 
+        executeMenuOption(chosenOption, tabs, openedTabsOrder) 
 
 Menu()
 
 
 # handling exceptions documentation  URL : https://docs.python.org/3/tutorial/errors.html
+# isdigit() method : return true if all characters are digits other wise return false docs : https://www.w3schools.com/python/ref_string_isdigit.asp
