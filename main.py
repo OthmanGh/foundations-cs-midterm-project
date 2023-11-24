@@ -1,4 +1,4 @@
-# function -> renderUserInterFace : takes no parameter, responsible for rendering menu options for the user
+# function -> renderUserInterFace : takes no parameter, responsible for displaying menu options for the user
 def renderUserInterfaceOptions():
     print("\n     1. Open Tab")
     print("     2. Close Tab")
@@ -10,6 +10,30 @@ def renderUserInterfaceOptions():
     print("     8. Import Tabs")
     print("     9. Exit\n") 
 
+# function -> handleChosenOption : accept a single parameter which represent user entered option
+# Depending on the provided option value, a corresponding function will be called to deliver specific functionality.. 
+def executeMenuOption(option):
+    if option == 1:
+        print("\nOpening Tab....")
+    elif option == 2:
+        print("\nClosing Tab....")
+    elif option == 3:
+        print("\nSwitch Tab....")
+    elif option == 4:
+        print("\nDisplay All Tabs....")
+    elif option == 5:
+        print("\nOpen Nested Tab")
+    elif option == 6:
+        print("\nSort All Tabs")
+    elif option == 7:
+        print("\nSave Tabs")
+    elif option == 8:
+        print("\nImport Tabs")
+    elif option == 9:
+        print("\nExit")
+    else: # in case inputed number less than 1 or greater than 9
+        print("\ninvalid input - Try Again")
+
 
 # function -> Menu : takes no parameter, responsible for handling menu functionality
 def Menu():
@@ -20,19 +44,16 @@ def Menu():
         renderUserInterfaceOptions()
         # handling Exceptions
         try:
-            options = int(input("choose one of these options ? "))
+            chosenOption = int(input("choose one of these options ? ")) # type casting entered number
         except ValueError:
             print("\ninvalid input a number must be entered - Try Again")
 
-        print(options)
+        executeMenuOption(chosenOption) 
 
 Menu()
 
 
-
-
-
-# handling exceptions wasn't explained however during code review sessions some class mates uses them to handle user inputs so I had to look out for the offical documentation to learn how to implemet it in python URL : https://docs.python.org/3/tutorial/errors.html
+# handling exceptions documentation  URL : https://docs.python.org/3/tutorial/errors.html
 
 
 # Within each step code will be tested to prevent unexpected errors
