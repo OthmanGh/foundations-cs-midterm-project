@@ -1,3 +1,8 @@
+# function -> openTab : takes a single parameter which will hold user inputed tabs
+# def openTab(tabs):
+#     title = input("enter tab title : ")
+
+
 # function -> renderUserInterFace : takes no parameter, responsible for displaying menu options for the user
 def renderUserInterfaceOptions():
     print("\n     1. Open Tab")
@@ -10,10 +15,20 @@ def renderUserInterfaceOptions():
     print("     8. Import Tabs")
     print("     9. Exit\n") 
 
-# function -> handleChosenOption : accept a single parameter which represent user entered option
+
+# function -> executeMenuOption : takes a single parameter which represent user inputed option
 # Depending on the provided option value, a corresponding function will be called to deliver specific functionality.. 
+
 def executeMenuOption(option):
+    # Main Data Structure : 
+    # Dictionary to store tabs which consists of titles attached to URLs (tabs)
+    # list to maintain the order of open tabs (openedTabsOrder)
+
+    tabs = {}
+    openedTabsOrder = []
+
     if option == 1:
+        #openTab(tabs)
         print("\nOpening Tab....")
     elif option == 2:
         print("\nClosing Tab....")
@@ -41,11 +56,11 @@ def Menu():
 
     # continue looping while exit_program is false
     while not exit_program:
-        renderUserInterfaceOptions()
+        renderUserInterfaceOptions() # display menu option
         # handling Exceptions
         try:
             chosenOption = int(input("choose one of these options ? ")) # type casting entered number
-        except ValueError:
+        except ValueError: # if inputed data is not a number
             print("\ninvalid input a number must be entered - Try Again")
 
         executeMenuOption(chosenOption) 
@@ -54,6 +69,3 @@ Menu()
 
 
 # handling exceptions documentation  URL : https://docs.python.org/3/tutorial/errors.html
-
-
-# Within each step code will be tested to prevent unexpected errors
