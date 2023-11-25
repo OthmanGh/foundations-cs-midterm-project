@@ -1,8 +1,9 @@
-# Note : most function will get tabs and tabsInOrder as a parameters/arguments so instead of commenting multiple time same thing will explain them down here once
-# parameter tabs : a dictionary contains our tabs titles attached with thier urls
-# parameter tabsInOrder :ma list that shows the order of opened tabs, items of the list will be represented as the title of tabs
+# Note : most functions will get tabs and tabsInOrder as a parameters/arguments so, instead of commenting multiple time same thing will explain them down here once
+# Parameters:
+# tabs : A dictionary containing tab names as keys and corresponding URLs as values
+# tabsInOrder : a list representing the order of tabs
 
-# function -> renderUserInterFace : takes no parameter, responsible for displaying menu options for the user
+# Function -> renderUserInterFace : takes no parameter, responsible for displaying menu options for the user
 def renderUserInterfaceOptions():
     print("\n     1. Open Tab")
     print("     2. Close Tab")
@@ -13,47 +14,47 @@ def renderUserInterfaceOptions():
     print("     7. Save Tabs")
     print("     8. Import Tabs")
     print("     9. Exit\n")
+  
 
-
-# https://www.google.com/
-# function -> isTitleValid : check if user entered tab's title is valid based on a certain conditions
-# parameter -> title : user entered tab's title
+# Function -> isTitleValid : check if user entered tab's title is valid based on a certain conditions
+# Parameter -> title : user entered tab's title
+# Note : these validation condition based on my preference so it doesn't follow any rule and it can be modifyied
 def isTitleValid(title):
-
-    if len(title) < 2:  # at least contain 3 letters
+    if len(title) < 2:  # at least contain 3 chars
         return False
 
     for char in title:  # Time Complexity : O(n), n length of title
-        if char.isdigit():  # should not contain any digits
+        if char.isdigit():  # Should not contain any digits
             return False
 
-    if not title.isalnum():  # title name shouldn't include any symbols
+    if not title.isalnum():  # Title name shouldn't include any symbols
         return False
 
     return True
 
-# function -> isUrlValid : since we are not asked to validate urls, this maybe handled later
-# parameter : user entered url
+# Function -> isUrlValid : since we are not asked to validate urls, this maybe handled later.
+# Parameter -> url : user entered url
 def isUrlValid(url):
     return len(url) > 5
 
 
-# function -> openTab : takes 2 parameters, allow the user to add a new tab
+# Function -> openTab : takes 2 parameters, allow the user to add a new tab
 def openTab(tabs, tabsInOrder):
-    title = input("\nenter tab title : ")  # enter tab's title
+    title = input("\nenter tab title : ")  # Enter tab's title
 
-    if isTitleValid(title):  # check if tab's title is valid
-        url = input("enter URL of the website : ")  # input url 😀
-        if isUrlValid(url):  # check if url is valid
-            tabs[title] = url  # add title associated with url to tabs dictionary
-            tabsInOrder.append(title)  # add title to order tabs list
+    if isTitleValid(title):  # Check if tab's title is valid
+        url = input("enter URL of the website : ")  # Input url 😀
+        if isUrlValid(url):  # Check if url is valid
+            tabs[title] = url  # Add title associated with url to dictionary tabs
+            tabsInOrder.append(title)  # Add title to order tabs list
         else:
             print("\ninvalid URL !!!")
     else:
         print("\ninvalid title name - Try Again")
 
 
-# function isValidIndex : takes 2 parameters, responsible for checking if the user entered a valid index value
+# Function -> isValidIndex : takes 2 parameters, check if user entered index value is valid
+# Parameter -> index : 
 def isValidIndex(index, tabsInOrder):
     try:
         idx = int(index)
@@ -64,43 +65,62 @@ def isValidIndex(index, tabsInOrder):
         return False
 
 
-# fuction closeTab : responsible for closing user's selected tab
+# Fuction -> closeTab : takes 2 parameters, responsible for closing user's selected tab
 def closeTab(tabs, tabsInOrder):
     index = input("\nindex of tab you wish to close : ")
 
-    if len(tabsInOrder) >= 1:
-        if isValidIndex(index, tabsInOrder):
-            del tabs[tabsInOrder[int(index)]]
-            tabsInOrder.pop(int(index))
-        elif index == '':
+    if len(tabsInOrder) >= 1: # Check if there is at least one opened tab
+        if isValidIndex(index, tabsInOrder): # Check if inputed index val is valid
+            del tabs[tabsInOrder[int(index)]] # Delete selected tab from tabs dictionary
+            tabsInOrder.pop(int(index)) # Remove selected tab at its specified index 
+        elif index == '': # user provide no input
             print("\nsince no index provided last tab will be closed")
-            del tabs[tabsInOrder[-1]]  # -1 to pick last item of dictionary
-            tabsInOrder.pop()
+            del tabs[tabsInOrder[-1]]  # -1 To delete last tab from tabs dictionary
+            tabsInOrder.pop() # Remove selected tab at its specified index 
         else:
             print("Invalid index - must be a number in the range of opened tabs")
     else:
         print("no tab is opened currently")
 
 
-import requests
-from bs4 import BeautifulSoup
-# web scraping docs :  https://www.geeksforgeeks.org/implementing-web-scraping-python-beautiful-soup/
+# Accessing the HTML content from webpage  docs :  https://www.geeksforgeeks.org/implementing-web-scraping-python-beautiful-soup/
+# youtube : https://www.youtube.com/watch?v=hlSR0JAKpeQ&t=296s&ab_channel=PlayWithCoding
 
-# function displayHtmlContent : takes 3 parameters
+import requests # 1 - First of all import the requests library. 
+from bs4 import BeautifulSoup
+
+# Function -> displayHtmlContent : display HTML content
+# Parameters:
+# - tabs: A dictionary containing tab names as keys and corresponding URLs as values
+# - tabsInOrder: A list representing the order of tabs
+# - index: An optional parameter specifying the index of the tab to display
 def displayHtmlContent(tabs, tabsInOrder, index=''):
-    title = tabsInOrder[-1] if index == '' else tabsInOrder[index] # ternary operator
-    url = tabs[title]
-    html = requests.get(url)
-    soup = BeautifulSoup(html.content, 'html.parser')
+
+    # Determine the title based on the provided index or use the last tab in order
+    title = tabsInOrder[-1] if index == '' else tabsInOrder[index] 
+    
+    # 2 - Specify the URL of the webpage you want to scrape.
+    url = tabs[title] 
+
+    # 3 - Send a HTTP request to the specified URL and save the response from server in a response object called r.
+    r = requests.get(url) 
+
+    # 4 - Parse the HTML content of the page using BeautifulSoup
+    soup = BeautifulSoup(r.content, 'html.parser') 
+
+    # Create a formatted output dictionary with the tab title as the key and the prettified HTML as the value
     formattedOutput = {title: soup.prettify()}
+
+    # Print a formatted dictionary with the tab title as the key and the prettified HTML as the value 
     print(formattedOutput)
 
 
-# function ->> switchTab : takes 2 parameters, responsible for printing the HTML content of the URL associated with the tab
+# Function -> switchTab : takes 2 parameters, responsible for switching tabs to display its html content
 def switchTab(tabs, tabsInOrder):
+
     tabIndex = input("What is the index of the tab to dispalay its content ? ")
 
-    if len(tabsInOrder) >= 1:
+    if len(tabsInOrder) >= 1: # Check if there is an actual opened tab
         if isValidIndex(tabIndex, tabsInOrder):
             displayHtmlContent(tabs, tabsInOrder, int(tabIndex))
         elif tabIndex == '':
@@ -109,10 +129,10 @@ def switchTab(tabs, tabsInOrder):
         print("no tab is opened currently")
 
 
-# function -> executeMenuOption : takes a single parameter, depending on the provided option value, a corresponding function will be called to deliver specific functionality...
-# parameter -> option : represent user chosen option from menu interface
+# Function -> executeMenuOption : takes a single parameter, depending on the provided option value, a corresponding function will be called to deliver specific functionality...
+# Parameter -> option : represent user chosen option from menu interface
 def executeMenuOption(option, tabs, tabsInOrder):
-    # creating our data structure here will lead to be re-initialized every time function is called so we'll loose our data
+
     if option == 1:
         openTab(tabs, tabsInOrder)
     elif option == 2:
@@ -135,25 +155,25 @@ def executeMenuOption(option, tabs, tabsInOrder):
         print("\ninvalid input - Try Again")
 
 
-# function -> Menu : takes no parameter, responsible for handling menu functionality
+# Function -> Menu : takes no parameter, responsible for handling menu functionality
 def Menu():
     exit_program = False  # exit_program will severs as a flag variable
 
     # Main Data Structures :
     # 1 - Dictionary to store tabs which consists of titles attached to URLs (tabs)
     # 2 - List to maintain the order of open tabs (tabsInOrder) which contain titles of opened tabs in order (depend on the way been inputed)
-    # keep in mind list and dictionaries are referenced data structures so they got passed by reference which means adding/removing local data will modify original data
+    # Keep in mind list and dictionaries are referenced data structures so they got passed by reference which means adding/removing local data will modify original data
     tabs = {}
     tabsOrder = []
 
-    # continue looping while exit_program is false
+    # Continue looping while exit_program is false
     while not exit_program:
-        renderUserInterfaceOptions()  # display menu option
-        # handling Exceptions
+        renderUserInterfaceOptions()  # Display menu option
+        # Handling Exceptions
         try:
-            # type casting entered number
+            # Type casting entered number
             chosenOption = int(input("choose one of these options ? "))
-        except ValueError:  # if inputed data is not a number
+        except ValueError:  # If inputed data is not a number
             print("\ninvalid input a number must be entered - Try Again")
 
         executeMenuOption(chosenOption, tabs, tabsOrder)
@@ -163,6 +183,9 @@ def Menu():
 
 Menu()
 
+
+# useful resources to clarify some used methods and explain other concepts : 
+
 # handling exceptions documentation  URL : https://docs.python.org/3/tutorial/errors.html
 
 # isdigit() method : return true if all characters are digits other wise return false docs : https://www.w3schools.com/python/ref_string_isdigit.asp
@@ -171,7 +194,6 @@ Menu()
 
 # How to Remove a Key from a Dict Using the del Keyword docs : https://www.freecodecamp.org/news/python-remove-key-from-dictionary/
 
-# False Values in Python docs : https://docs.python.org/release/2.5.2/lib/truth.html
+# Falsey Values in Python docs : https://docs.python.org/release/2.5.2/lib/truth.html
 
 # isalnum() method : returns True if all the characters are alphanumeric. Docs: https://www.w3schools.com/python/ref_string_isalnum.asp
-
