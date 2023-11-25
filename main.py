@@ -129,6 +129,19 @@ def switchTab(tabs, tabsInOrder):
         print("no tab is opened currently")
 
 
+
+# If the admin chooses (4), the system should print the titles of all open tabs. If there are nested tabs, display them hierarchically.
+def displayAllTabs(tabs, tabsInOrder):
+    # Will deal with nested tabs later....
+    if len(tabsInOrder) >= 1: 
+        print("\nTitles of All Opened Tabs : ")
+        for title in tabsInOrder: # Time Comlexity O(n), n length of tabsInOrder list
+            print(title)
+        print("\n")
+    else:
+        print("no tab is opened currently")
+
+
 # Function -> executeMenuOption : takes a single parameter, depending on the provided option value, a corresponding function will be called to deliver specific functionality...
 # Parameter -> option : represent user chosen option from menu interface
 def executeMenuOption(option, tabs, tabsInOrder):
@@ -140,7 +153,7 @@ def executeMenuOption(option, tabs, tabsInOrder):
     elif option == 3:
         switchTab(tabs, tabsInOrder)
     elif option == 4:
-        print("\nDisplay All Tabs....")
+        displayAllTabs(tabs, tabsInOrder)
     elif option == 5:
         print("\nOpen Nested Tab")
     elif option == 6:
@@ -153,6 +166,7 @@ def executeMenuOption(option, tabs, tabsInOrder):
         print("\nExit")
     else:  # in case inputed number less than 1 or greater than 9
         print("\ninvalid input - Try Again")
+
 
 
 # Function -> Menu : takes no parameter, responsible for handling menu functionality
