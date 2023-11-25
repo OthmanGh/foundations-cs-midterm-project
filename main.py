@@ -155,6 +155,17 @@ def saveTabs(tabs):
         json.dump(tabs, outfile)  # Json.dump() will transform the Python dictionary to a JSON string 
 
 
+# How to Parse Data From JSON into Python docs : https://www.geeksforgeeks.org/how-to-parse-data-from-json-into-python/
+
+def importTabs(tabs):
+
+    path = input("input a file path to load tabs : ")  # Enter a file path directory :
+    
+    with open(path, 'r') as inputFile:
+        loadedData = json.load(inputFile)
+    
+    tabs.update(loadedData)  # Update it with the loaded data
+
 # Function -> executeMenuOption : takes a single parameter, depending on the provided option value, a corresponding function will be called to deliver specific functionality...
 # Parameter -> option : represent user chosen option from menu interface
 def executeMenuOption(option, tabs, tabsInOrder):
@@ -174,7 +185,7 @@ def executeMenuOption(option, tabs, tabsInOrder):
     elif option == 7:
         saveTabs(tabs)
     elif option == 8:
-        print("\nImport Tabs")
+        importTabs(tabs)
     elif option == 9:
         print("\nExit")
     else:  # in case inputed number less than 1 or greater than 9
@@ -205,7 +216,7 @@ def Menu():
         executeMenuOption(chosenOption, tabs, tabsOrder)
 
         print(tabs)
-        print(tabsOrder)
+        # print(tabsOrder)
 
 Menu()
 
@@ -223,3 +234,5 @@ Menu()
 
 # isalnum() method : returns True if all the characters are alphanumeric. Docs: https://www.w3schools.com/python/ref_string_isalnum.asp
 
+
+# Python - Add Dictionary Items docs : https://www.w3schools.com/python/python_dictionaries_add.asp
