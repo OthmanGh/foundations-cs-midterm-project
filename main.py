@@ -142,7 +142,24 @@ def displayAllTabs(tabs, tabsInOrder):
         print("no tab is opened currently")
 
 
-# If the admin chooses (6), the system should allow users to sort all opened tabs based on their Titles.
+# If the admin chooses (5), the system should enable users to create nested tabs by specifying the index of the parent tab where they want to insert additional tabs. After entering the index, the system should prompt the user to input the titles and contents for the new tabs.
+
+def openNestedTab(tabs, tabsInOrder):
+    if len(tabsInOrder) >= 1: # Check if there are an actual opened tabs
+        index = input("What is the index of the parent tab that you want to insert additional tabs : ")
+
+        if isValidIndex(index) : # Check if index val is valid
+            idx = int(index) # Convert to actual integer
+            title = tabsInOrder[idx] #  get the title to add it to the dictionary
+
+            print(title)
+
+    else:
+        print("no tab is opened currently")
+
+
+
+
 # Function -> merge : takes 3 params, combine sublists into one sorted array
 # Params -> starterIdx : first index of tabsInOrder
 # Params -> endIdx : last index of tabsInOrder
@@ -220,7 +237,6 @@ def importTabs(tabs):
     tabs.update(loadedData)  # Update it with the loaded data
 
 
-# If the user chooses (9), the program should exit.
 # Function -> terminateProgram : takes no parameter, responsible for closing the program by return true to exitProgram variable
 def terminateProgram():
     print("Program Terminated.....")
@@ -240,7 +256,7 @@ def executeMenuOption(option, tabs, tabsInOrder):
     elif option == 4:
         displayAllTabs(tabs, tabsInOrder)
     elif option == 5:
-        print("\nOpen Nested Tab")
+        openNestedTab(tabs, tabsInOrder)
     elif option == 6:
         sortAllTabs(tabsInOrder, 0, len(tabsInOrder) - 1)
     elif option == 7:
