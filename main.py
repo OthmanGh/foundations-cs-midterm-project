@@ -79,11 +79,10 @@ def closeTab(tabs, tabsInOrder):
 
     if len(tabsInOrder) >= 1: # Check if there is at least one opened tab
         if isValidIndex(index, tabsInOrder): # Check if inputed index val is valid
-            idx = int(index)
-            title = tabsInOrder[idx] if len(tabsInOrder[idx]) == 1 else tabsInOrder[idx][0]
-            del tabs[title]
+            idx = int(index) # convert index to number
+            title = tabsInOrder[idx] if len(tabsInOrder[idx]) == 1 else tabsInOrder[idx][0] # check if tab to close has a nested tab
+            del tabs[title] # delete the whole tab
             tabsInOrder.pop(int(index)) # Remove selected tab at its specified index 
-
         elif index == '': # user provide no input
             print("\nsince no index provided last tab will be closed")
             del tabs[tabsInOrder[-1]]  # -1 To delete last tab from tabs dictionary
@@ -92,21 +91,6 @@ def closeTab(tabs, tabsInOrder):
             print("Invalid index - must be a number in the range of opened tabs")
     else:
         print("no tab is opened currently")
-
-
-    # if len(tabsInOrder) >= 1: # Check if there is at least one opened tab
-    #     if isValidIndex(index, tabsInOrder): # Check if inputed index val is valid
-    #         if len(tabsInOrder[int(index)]) ==1:
-    #             del tabs[tabsInOrder[int(index)]] # Delete selected tab from tabs dictionary
-    #             tabsInOrder.pop(int(index)) # Remove selected tab at its specified index 
-    #     elif index == '': # user provide no input
-    #         print("\nsince no index provided last tab will be closed")
-    #         del tabs[tabsInOrder[-1]]  # -1 To delete last tab from tabs dictionary
-    #         tabsInOrder.pop() # Remove selected tab at its specified index 
-    #     else:
-    #         print("Invalid index - must be a number in the range of opened tabs")
-    # else:
-    #     print("no tab is opened currently")
 
 
 # Accessing the HTML content from webpage  docs :  https://www.geeksforgeeks.org/implementing-web-scraping-python-beautiful-soup/
@@ -154,12 +138,15 @@ def switchTab(tabs, tabsInOrder):
 
 
 # If the admin chooses (4), the system should print the titles of all open tabs. If there are nested tabs, display them hierarchically.
-def displayAllTabs(tabs, tabsInOrder):
-    # Will deal with nested tabs later....
+def displayAllTabs(tabsInOrder):
     if len(tabsInOrder) >= 1: 
         print("\nTitles of All Opened Tabs : ")
         for title in tabsInOrder: # Time Comlexity O(n), n length of tabsInOrder list
-            print(title)
+            if type(title) == str:
+                print(title)
+            elif type(title) == list:
+                print(title[0])
+                print(f"  {title[1]}")            
         print("\n")
     else:
         print("no tab is opened currently")
@@ -297,7 +284,7 @@ def executeMenuOption(option, tabs, tabsInOrder):
     elif option == 3:
         switchTab(tabs, tabsInOrder)
     elif option == 4:
-        displayAllTabs(tabs, tabsInOrder)
+        displayAllTabs(tabsInOrder)
     elif option == 5:
         openNestedTab(tabs, tabsInOrder)
     elif option == 6:
