@@ -142,6 +142,59 @@ def displayAllTabs(tabs, tabsInOrder):
         print("no tab is opened currently")
 
 
+# If the admin chooses (6), the system should allow users to sort all opened tabs based on their Titles.
+# Function -> merge : takes 3 params, combine sublists into one sorted array
+# Params -> starterIdx : first index of tabsInOrder
+# Params -> endIdx : last index of tabsInOrder
+def merge(list, starterIndx, endIdx): # Time complexity for merging log(N), N number of items inside list
+    s = starterIndx 
+    m = (starterIndx + endIdx) // 2
+    j = m + 1
+
+    temp = []
+
+    while s <= m and j <= endIdx: # Compare 2 sorted sublists to append them into one sorted list
+        if list[s].lower() < list[j].lower(): 
+            temp.append(list[s])
+            s += 1
+        else:
+            temp.append(list[j])
+            j += 1
+    
+    # Handle remaining elements in one of the lists
+    while s <= m:
+        temp.append(list[s])
+        s += 1
+
+    while j <= endIdx:
+        temp.append(list[j])
+        j += 1
+
+    k = 0
+    for index in range(starterIndx, endIdx + 1):
+        list[index] = temp[k]
+        k += 1
+
+
+# Function -> sortAllTabs : takes 3 params,  will sort all elements in tabsInOrder using merge sort algorithm
+# Params -> starterIdx : first index of tabsInOrder
+# Params -> endIdx : last index of tabsInOrder
+# Merge sort is a divide and conquer algorithm, in total time complexity for merge sort is O(Nlog N) where N is the number of items inside list
+def sortAllTabs(tabsInOrder, starterIdx, endIdx): # Time Complexity for this function O(logN) N tabs inside list
+    # Base Case
+    if starterIdx >= endIdx : # We reached this when evey sublist contain only 1 element which considered to be sorted 
+        return  
+    
+    # Recursive Case 
+    mid = (starterIdx + endIdx) // 2 # Will split array into 2 part continously
+    
+    sortAllTabs(tabsInOrder, starterIdx, mid)  # Handle left part of tabsInOrder
+    sortAllTabs(tabsInOrder, mid + 1, endIdx)  # Handle right part of tabsInOrder
+
+    merge(tabsInOrder, starterIdx, endIdx) # Call merge to combine sublists into a sorted one
+
+
+
 # Json docs : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON, https://www.geeksforgeeks.org/json/
 # Read, Write and Parse JSON using Python docs : https://www.geeksforgeeks.org/read-write-and-parse-json-using-python/
 
@@ -160,7 +213,7 @@ def saveTabs(tabs):
 def importTabs(tabs):
 
     path = input("input a file path to load tabs : ")  # Enter a file path directory :
-    
+
     with open(path, 'r') as inputFile:
         loadedData = json.load(inputFile)
     
@@ -181,7 +234,7 @@ def executeMenuOption(option, tabs, tabsInOrder):
     elif option == 5:
         print("\nOpen Nested Tab")
     elif option == 6:
-        print("\nSort All Tabs")
+        sortAllTabs(tabsInOrder, 0, len(tabsInOrder) - 1)
     elif option == 7:
         saveTabs(tabs)
     elif option == 8:
@@ -216,7 +269,7 @@ def Menu():
         executeMenuOption(chosenOption, tabs, tabsOrder)
 
         print(tabs)
-        # print(tabsOrder)
+        print(tabsOrder)
 
 Menu()
 
