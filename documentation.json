@@ -1,6 +1,6 @@
 {
-  "Mdn": "https://developer.mozilla.org/en-US/",
-  "GeeksForGeeks": "https://www.geeksforgeeks.org/",
-  "freeCodeCamp": "https://www.freecodecamp.org/learn",
-  "HackerRank": "https://www.hackerrank.com/"
+  "Mdn": { "url": "https://developer.mozilla.org/en-US/" },
+  "GeeksForGeeks": { "url": "https://www.geeksforgeeks.org/" },
+  "freeCodeCamp": { "url": "https://www.freecodecamp.org/learn" },
+  "HackerRank": { "url": "https://www.hackerrank.com/" }
 }

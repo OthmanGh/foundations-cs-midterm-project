@@ -14,7 +14,6 @@ def renderUserInterfaceOptions():
     print("     7. Save Tabs")
     print("     8. Import Tabs")
     print("     9. Exit\n")
-  
 
 # Function -> isTitleValid : check if user entered tab's title is valid based on a certain conditions
 # Parameter -> title : user entered tab's title
@@ -70,7 +69,7 @@ def isValidIndex(index, tabsInOrder):
         # if index is an actual number must be in range of list 0 <= index < len(list) otherwise generate error
         return 0 <= idx < len(tabsInOrder)
 
-    except ValueError: #ValueError executes when a function receives an argument of the correct type but an inappropriate value. 
+    except ValueError: #ValueError raised when a function receives an argument of the correct type but an inappropriate value. 
         return False
 
 
@@ -109,7 +108,7 @@ def displayHtmlContent(tabs, tabsInOrder, index=''):
     title = tabsInOrder[-1] if index == '' else tabsInOrder[index] 
     
     # 2 - Specify the URL of the webpage you want to scrape.
-    url = tabs[title] 
+    url = tabs[title]['url'] 
 
     # 3 - Send a HTTP request to the specified URL and save the response from server in a response object called r.
     r = requests.get(url) 
@@ -117,12 +116,10 @@ def displayHtmlContent(tabs, tabsInOrder, index=''):
     # 4 - Parse the HTML content of the page using BeautifulSoup
     soup = BeautifulSoup(r.content, 'html.parser') 
 
-    # Create a formatted output dictionary with the tab title as the key and the prettified HTML as the value
-    formattedOutput = {title: soup.prettify()}
+    # creating an 'htmlContent' key within the value dictionary of each Title
+    tabs[title]['htmlContent'] = soup
 
-    # Print a formatted dictionary with the tab title as the key and the prettified HTML as the value 
-    print(formattedOutput)
-
+    print({title : tabs[title]['htmlContent']})
 
 # Function -> switchTab : takes 2 parameters, responsible for switching tabs to display its html content
 def switchTab(tabs, tabsInOrder):
@@ -312,8 +309,7 @@ def Menu():
             print("\ninvalid input a number must be entered - Try Again")
 
         exitProgram = executeMenuOption(chosenOption, tabs, tabsOrder)
-        print(tabs)
-        print(tabsOrder)
+
 
 Menu()
 
