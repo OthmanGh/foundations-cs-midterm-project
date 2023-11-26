@@ -220,22 +220,28 @@ def sortAllTabs(tabsInOrder, starterIdx, endIdx): # Time Complexity for this fun
     merge(tabsInOrder, starterIdx, endIdx) # Call merge to combine sublists into a sorted one
 
 
-
 # resources for codes below
 # Json docs : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON, https://www.geeksforgeeks.org/json/
 # Read, Write and Parse JSON using Python docs : https://www.geeksforgeeks.org/read-write-and-parse-json-using-python/
 # JSON Parsing Errors in Python docs : https://www.geeksforgeeks.org/json-parsing-errors-in-python/, https://ioflood.com/blog/read-json-file-python/
 # How to Parse Data From JSON into Python docs : https://www.geeksforgeeks.org/how-to-parse-data-from-json-into-python/
+# Difference between except: and except Exception as e docs : https://stackoverflow.com/questions/18982610/difference-between-except-and-except-exception-as-e
 
 import json
 
 def saveTabs(tabs):
     # Enter a file path directory :
-    path = input("Enter a file path : ")
+    try:
+        path = input("Enter a file path : ")
 
-    with open(path, 'w') as outfile: # json data will be saved in provided directory
-        json.dump(tabs, outfile)  # Json.dump() will transform the Python dictionary to a JSON string 
-
+        with open(path, 'a') as outfile: # json data will be saved in provided directory 
+            json.dump(tabs, outfile)  # Json.dump() will transform the Python dictionary to a JSON string 
+            
+    except PermissionError:
+        print("Permission error. Please indicate a valid directory where you have write permissions.")
+        
+    except Exception as e:
+        print(f"unexpected error occured  : {e} !!!")
 
 
 def importTabs(tabs, tabsInOrder):
@@ -243,11 +249,11 @@ def importTabs(tabs, tabsInOrder):
             try:
                 with open(path, 'r') as inputFile:
                     loadedData = json.load(inputFile)
-            except PermissionError:
+            except PermissionError: # Check if directory is not valid
                 print("Permission error. Please indicate a valid directory.")
-            except FileNotFoundError: 
+            except FileNotFoundError:  # Check if targeted file don't exist
                 print("File not found. Please check the file path.")
-            except json.JSONDecodeError as e:
+            except json.JSONDecodeError as e: # Check if imported json syntax is valid
                 print("invalid json syntax : ", e)
             else:
                 tabs.update(loadedData)
