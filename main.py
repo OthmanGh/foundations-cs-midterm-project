@@ -148,7 +148,7 @@ def openNestedTab(tabs, tabsInOrder):
     if len(tabsInOrder) >= 1: # Check if there are an actual opened tabs
         index = input("What is the index of the parent tab that you want to insert additional tabs : ")
 
-        if isValidIndex(index) : # Check if index val is valid
+        if isValidIndex(index, tabsInOrder) : # Check if index val is valid
             idx = int(index) # Convert to actual integer
             title = tabsInOrder[idx] #  get the title to add it to the dictionary
 
@@ -227,7 +227,7 @@ def saveTabs(tabs):
 
 # How to Parse Data From JSON into Python docs : https://www.geeksforgeeks.org/how-to-parse-data-from-json-into-python/
 
-def importTabs(tabs):
+def importTabs(tabs, tabsInOrder):
 
     path = input("input a file path to load tabs : ")  # Enter a file path directory :
 
@@ -236,6 +236,8 @@ def importTabs(tabs):
     
     tabs.update(loadedData)  # Update it with the loaded data
 
+    for key in tabs:  # Time Complexity O(N)
+       tabsInOrder.append(key) # add loaded tabsInOrder list
 
 # Function -> terminateProgram : takes no parameter, responsible for closing the program by return true to exitProgram variable
 def terminateProgram():
@@ -262,7 +264,7 @@ def executeMenuOption(option, tabs, tabsInOrder):
     elif option == 7:
         saveTabs(tabs)
     elif option == 8:
-        importTabs(tabs)
+        importTabs(tabs, tabsInOrder)
     elif option == 9:
         return terminateProgram()
     else:  # in case inputed number less than 1 or greater than 9
