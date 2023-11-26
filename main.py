@@ -135,7 +135,6 @@ def switchTab(tabs, tabsInOrder):
         print("no tab is opened currently")
 
 
-
 # If the admin chooses (4), the system should print the titles of all open tabs. If there are nested tabs, display them hierarchically.
 def displayAllTabs(tabs, tabsInOrder):
     # Will deal with nested tabs later....
@@ -147,7 +146,6 @@ def displayAllTabs(tabs, tabsInOrder):
     else:
         print("no tab is opened currently")
 
-
 # If the admin chooses (5), the system should enable users to create nested tabs by specifying the index of the parent tab where they want to insert additional tabs. After entering the index, the system should prompt the user to input the titles and contents for the new tabs.
 
 def openNestedTab(tabs, tabsInOrder):
@@ -155,18 +153,20 @@ def openNestedTab(tabs, tabsInOrder):
         index = input("What is the index of the parent tab that you want to insert additional tabs : ")
 
         if isValidIndex(index, tabsInOrder) : # Check if index val is valid
-            idx = int(index) # Convert to actual integer
-            parentTitle = tabsInOrder[idx] #  Get the title to add it to the dictionary
-            tempList = [] # This array will store both parent tab url and nested tab
-            tempList.append(tabs[parentTitle]) # Store url inside tempList
-            tempDict = {} # Contains our tab's title attached to url
-            openTab(tempDict)
-            tempList.append(tempDict) # Push our nested tab data to tempList
-            tabs[parentTitle] = tempList # Change value of Parent tab to contain both url and nested tab as indicis inside list
+            idx = int(index) # Convert to actu    title = input("\nenter tab title : ")  # Enter tab's title
+            parentTitle = tabsInOrder[idx] #
+            childTitle = input("enter nested tab title : ")
 
-    else:
-        print("no tab is opened currently")
-
+            if isTitleValid(childTitle):  # Check if nested tab's title is valid
+                url = input("enter URL of the website : ")  # Input url 😀
+                if isUrlValid(url):  # Check if url is valid
+                    tabs[parentTitle]['nested tab'] = {'url' : url}
+                    print(tabs)
+                    tabsInOrder[idx] = [parentTitle, childTitle]
+                else:
+                    print("\ninvalid url....")
+            else:
+                print("\ninvalid title name - Try Again")
 
 
 # Function -> merge : takes 3 params, combine sublists into one sorted array
@@ -238,7 +238,6 @@ def saveTabs(tabs):
 # How to Parse Data From JSON into Python docs : https://www.geeksforgeeks.org/how-to-parse-data-from-json-into-python/
 
 def importTabs(tabs, tabsInOrder):
-    try:
         path = input("input a file path to load tabs : ")  # Enter a file path directory :
 
         with open(path, 'r') as inputFile:
@@ -248,12 +247,7 @@ def importTabs(tabs, tabsInOrder):
 
         for key in tabs:  # Time Complexity O(N)
             tabsInOrder.append(key) # add loaded tabsInOrder list
-    except FileNotFoundError:
-        print(f"Error: The file '{path}' was not found.")
-    except json.JSONDecodeError as e:
-        print(f"Error decoding JSON in the file '{path}': {e}")
-    except Exception as e:
-        print(f"An unexpected error occurred: {e}")
+
 
 # Function -> terminateProgram : takes no parameter, responsible for closing the program by return true to exitProgram variable
 def terminateProgram():
@@ -296,7 +290,7 @@ def Menu():
     # 2 - List to maintain the order of open tabs (tabsInOrder) which contain titles of opened tabs in order (depend on the way been inputed)
     # Keep in mind list and dictionaries are referenced data structures so they got passed by reference which means adding/removing local data will modify original data
     tabs = {}
-    tabsOrder = []
+    orderTabsList = []
 
     # Continue looping while exitProgram is false
     while not exitProgram:
@@ -308,9 +302,10 @@ def Menu():
         except ValueError:  # If inputed data is not a number
             print("\ninvalid input a number must be entered - Try Again")
 
-        exitProgram = executeMenuOption(chosenOption, tabs, tabsOrder)
-
-
+        exitProgram = executeMenuOption(chosenOption, tabs, orderTabsList)
+    
+        print(orderTabsList)
+      
 Menu()
 
 # useful resources to clarify some used methods and explain other concepts : 
