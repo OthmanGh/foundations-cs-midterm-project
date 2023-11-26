@@ -27,15 +27,24 @@ def isTitleValid(title):
         if char.isdigit():  # Should not contain any digits
             return False
 
-    if not title.isalnum():  # Title name shouldn't include any symbols
-        return False
+    for char in title:  # Title name shouldn't include any symbols except spaces
+        if char != ' ':
+            if not char.isalnum(): 
+                return False
 
     return True
 
+# how to check if a URL is valid or not docs : https://stackoverflow.com/questions/7160737/how-to-validate-a-url-in-python-malformed-or-not
+from urllib.parse import urlparse
+
 # Function -> isUrlValid : since we are not asked to validate urls, this maybe handled later.
 # Parameter -> url : user entered url
-def isUrlValid(url):
-    return len(url) > 5
+def isUrlValid(url): 
+    try:
+        result = urlparse(url)
+        return all([result.scheme, result.netloc])
+    except:
+        return False
 
 
 # Function -> openTab : takes 2 parameters, allow the user to add a new tab
@@ -45,10 +54,10 @@ def openTab(tabs, tabsInOrder):
     if isTitleValid(title):  # Check if tab's title is valid
         url = input("enter URL of the website : ")  # Input url 😀
         if isUrlValid(url):  # Check if url is valid
-            tabs[title] = url  # Add title associated with url to dictionary tabs
+            tabs[title] = {'url' : url}  # Add title attached to dictionary that contains url link
             tabsInOrder.append(title)  # Add title to order tabs list
         else:
-            print("\ninvalid URL !!!")
+            print("\ninvalid url....")
     else:
         print("\ninvalid title name - Try Again")
 
@@ -61,7 +70,7 @@ def isValidIndex(index, tabsInOrder):
         # if index is an actual number must be in range of list 0 <= index < len(list) otherwise generate error
         return 0 <= idx < len(tabsInOrder)
 
-    except ValueError:
+    except ValueError: #ValueError executes when a function receives an argument of the correct type but an inappropriate value. 
         return False
 
 
@@ -217,6 +226,7 @@ def sortAllTabs(tabsInOrder, starterIdx, endIdx): # Time Complexity for this fun
 
 # Json docs : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON, https://www.geeksforgeeks.org/json/
 # Read, Write and Parse JSON using Python docs : https://www.geeksforgeeks.org/read-write-and-parse-json-using-python/
+# JSON Parsing Errors in Python docs : https://www.geeksforgeeks.org/json-parsing-errors-in-python/
 
 import json
 
@@ -231,16 +241,22 @@ def saveTabs(tabs):
 # How to Parse Data From JSON into Python docs : https://www.geeksforgeeks.org/how-to-parse-data-from-json-into-python/
 
 def importTabs(tabs, tabsInOrder):
+    try:
+        path = input("input a file path to load tabs : ")  # Enter a file path directory :
 
-    path = input("input a file path to load tabs : ")  # Enter a file path directory :
+        with open(path, 'r') as inputFile:
+            loadedData = json.load(inputFile)
+        
+        tabs.update(loadedData)  # Update it with the loaded data
 
-    with open(path, 'r') as inputFile:
-        loadedData = json.load(inputFile)
-    
-    tabs.update(loadedData)  # Update it with the loaded data
-
-    for key in tabs:  # Time Complexity O(N)
-       tabsInOrder.append(key) # add loaded tabsInOrder list
+        for key in tabs:  # Time Complexity O(N)
+            tabsInOrder.append(key) # add loaded tabsInOrder list
+    except FileNotFoundError:
+        print(f"Error: The file '{path}' was not found.")
+    except json.JSONDecodeError as e:
+        print(f"Error decoding JSON in the file '{path}': {e}")
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
 
 # Function -> terminateProgram : takes no parameter, responsible for closing the program by return true to exitProgram variable
 def terminateProgram():
@@ -279,7 +295,7 @@ def Menu():
     exitProgram = False  # exitProgram will severs as a flag variable
 
     # Main Data Structures :
-    # 1 - Dictionary to store tabs which consists of titles attached to URLs (tabs)
+    # 1 - Dictionary to store tabs which consists of titles attached to another dictionary which may consist of 3 main keys url, htmlContent, nestedTab
     # 2 - List to maintain the order of open tabs (tabsInOrder) which contain titles of opened tabs in order (depend on the way been inputed)
     # Keep in mind list and dictionaries are referenced data structures so they got passed by reference which means adding/removing local data will modify original data
     tabs = {}
