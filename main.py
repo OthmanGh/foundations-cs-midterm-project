@@ -221,9 +221,11 @@ def sortAllTabs(tabsInOrder, starterIdx, endIdx): # Time Complexity for this fun
 
 
 
+# resources for codes below
 # Json docs : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON, https://www.geeksforgeeks.org/json/
 # Read, Write and Parse JSON using Python docs : https://www.geeksforgeeks.org/read-write-and-parse-json-using-python/
-# JSON Parsing Errors in Python docs : https://www.geeksforgeeks.org/json-parsing-errors-in-python/
+# JSON Parsing Errors in Python docs : https://www.geeksforgeeks.org/json-parsing-errors-in-python/, https://ioflood.com/blog/read-json-file-python/
+# How to Parse Data From JSON into Python docs : https://www.geeksforgeeks.org/how-to-parse-data-from-json-into-python/
 
 import json
 
@@ -235,19 +237,23 @@ def saveTabs(tabs):
         json.dump(tabs, outfile)  # Json.dump() will transform the Python dictionary to a JSON string 
 
 
-# How to Parse Data From JSON into Python docs : https://www.geeksforgeeks.org/how-to-parse-data-from-json-into-python/
 
 def importTabs(tabs, tabsInOrder):
-        path = input("input a file path to load tabs : ")  # Enter a file path directory :
+            path = input("input a file path to load tabs : ")  # Enter a file path directory :
+            try:
+                with open(path, 'r') as inputFile:
+                    loadedData = json.load(inputFile)
+            except PermissionError:
+                print("Permission error. Please indicate a valid directory.")
+            except FileNotFoundError:
+                print("File not found. Please check the file path.")
+            except json.JSONDecodeError as e:
+                print("invalid json syntax : ", e)
+            else:
+                tabs.update(loadedData)
 
-        with open(path, 'r') as inputFile:
-            loadedData = json.load(inputFile)
-        
-        tabs.update(loadedData)  # Update it with the loaded data
-
-        for key in tabs:  # Time Complexity O(N)
-            tabsInOrder.append(key) # add loaded tabsInOrder list
-
+                for key in tabs:
+                    tabsInOrder.append(key)
 
 # Function -> terminateProgram : takes no parameter, responsible for closing the program by return true to exitProgram variable
 def terminateProgram():
@@ -286,7 +292,7 @@ def Menu():
     exitProgram = False  # exitProgram will severs as a flag variable
 
     # Main Data Structures :
-    # 1 - Dictionary to store tabs which consists of titles attached to another dictionary which may consist of 3 main keys url, htmlContent, nestedTab
+    # 1 - Dictionary to store tabs which consists of titles attached to another dictionary which may consist of 3 main keys url, htmlContent, nestedTab sure each one of them will be attached to values
     # 2 - List to maintain the order of open tabs (tabsInOrder) which contain titles of opened tabs in order (depend on the way been inputed)
     # Keep in mind list and dictionaries are referenced data structures so they got passed by reference which means adding/removing local data will modify original data
     tabs = {}
