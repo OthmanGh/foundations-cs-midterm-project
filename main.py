@@ -79,16 +79,34 @@ def closeTab(tabs, tabsInOrder):
 
     if len(tabsInOrder) >= 1: # Check if there is at least one opened tab
         if isValidIndex(index, tabsInOrder): # Check if inputed index val is valid
-            del tabs[tabsInOrder[int(index)]] # Delete selected tab from tabs dictionary
+            idx = int(index)
+            title = tabsInOrder[idx] if len(tabsInOrder[idx]) == 1 else tabsInOrder[idx][0]
+            del tabs[title]
             tabsInOrder.pop(int(index)) # Remove selected tab at its specified index 
+
         elif index == '': # user provide no input
             print("\nsince no index provided last tab will be closed")
             del tabs[tabsInOrder[-1]]  # -1 To delete last tab from tabs dictionary
-            tabsInOrder.pop() # Remove selected tab at its specified index 
+            tabsInOrder.pop() # Remove selected tab
         else:
             print("Invalid index - must be a number in the range of opened tabs")
     else:
         print("no tab is opened currently")
+
+
+    # if len(tabsInOrder) >= 1: # Check if there is at least one opened tab
+    #     if isValidIndex(index, tabsInOrder): # Check if inputed index val is valid
+    #         if len(tabsInOrder[int(index)]) ==1:
+    #             del tabs[tabsInOrder[int(index)]] # Delete selected tab from tabs dictionary
+    #             tabsInOrder.pop(int(index)) # Remove selected tab at its specified index 
+    #     elif index == '': # user provide no input
+    #         print("\nsince no index provided last tab will be closed")
+    #         del tabs[tabsInOrder[-1]]  # -1 To delete last tab from tabs dictionary
+    #         tabsInOrder.pop() # Remove selected tab at its specified index 
+    #     else:
+    #         print("Invalid index - must be a number in the range of opened tabs")
+    # else:
+    #     print("no tab is opened currently")
 
 
 # Accessing the HTML content from webpage  docs :  https://www.geeksforgeeks.org/implementing-web-scraping-python-beautiful-soup/
@@ -118,7 +136,7 @@ def displayHtmlContent(tabs, tabsInOrder, index=''):
 
     # creating an 'htmlContent' key within the value dictionary of each Title
     tabs[title]['htmlContent'] = soup
-
+    print("\n")
     print({title : tabs[title]['htmlContent']})
 
 # Function -> switchTab : takes 2 parameters, responsible for switching tabs to display its html content
@@ -148,6 +166,7 @@ def displayAllTabs(tabs, tabsInOrder):
 
 # If the admin chooses (5), the system should enable users to create nested tabs by specifying the index of the parent tab where they want to insert additional tabs. After entering the index, the system should prompt the user to input the titles and contents for the new tabs.
 
+# Function openNestedTab 
 def openNestedTab(tabs, tabsInOrder):
     if len(tabsInOrder) >= 1: # Check if there are an actual opened tabs
         index = input("What is the index of the parent tab that you want to insert additional tabs : ")
