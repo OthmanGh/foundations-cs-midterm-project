@@ -150,34 +150,16 @@ def openNestedTab(tabs, tabsInOrder):
 
         if isValidIndex(index, tabsInOrder) : # Check if index val is valid
             idx = int(index) # Convert to actual integer
-            parentTitle = tabsInOrder[idx] #  get the title to add it to the dictionary
-
-            print(parentTitle)
-            tempList = [] # this array will store both url and nested tab
-
-            tempList.append(tabs[parentTitle])
-
-            title = input("\nenter tab title : ")  # Enter tab's title
-
-            tempDict = {}
-            if isTitleValid(title):  # Check if tab's title is valid
-                url = input("enter URL of the website : ")  # Input url 😀
-                if isUrlValid(url):  # Check if url is valid
-                    tempDict[title] = url  # Add title associated with url to dictionary tabs
-                    tabsInOrder.append(title)  # Add title to order tabs list
-                else:
-                    print("\ninvalid URL !!!")
-            else:
-                print("\ninvalid title name - Try Again")
-
-            tempList.append(tempDict)
-
-
-            tabs[parentTitle] = tempList
+            parentTitle = tabsInOrder[idx] #  Get the title to add it to the dictionary
+            tempList = [] # This array will store both parent tab url and nested tab
+            tempList.append(tabs[parentTitle]) # Store url inside tempList
+            tempDict = {} # Contains our tab's title attached to url
+            openTab(tempDict)
+            tempList.append(tempDict) # Push our nested tab data to tempList
+            tabs[parentTitle] = tempList # Change value of Parent tab to contain both url and nested tab as indicis inside list
 
     else:
         print("no tab is opened currently")
-
 
 
 
