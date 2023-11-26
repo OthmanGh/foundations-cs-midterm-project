@@ -245,7 +245,7 @@ def importTabs(tabs, tabsInOrder):
                     loadedData = json.load(inputFile)
             except PermissionError:
                 print("Permission error. Please indicate a valid directory.")
-            except FileNotFoundError:
+            except FileNotFoundError: 
                 print("File not found. Please check the file path.")
             except json.JSONDecodeError as e:
                 print("invalid json syntax : ", e)
