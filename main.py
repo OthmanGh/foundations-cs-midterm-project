@@ -219,6 +219,14 @@ def importTabs(tabs):
     
     tabs.update(loadedData)  # Update it with the loaded data
 
+
+# If the user chooses (9), the program should exit.
+# Function -> terminateProgram : takes no parameter, responsible for closing the program by return true to exitProgram variable
+def terminateProgram():
+    print("Program Terminated.....")
+    return True
+
+
 # Function -> executeMenuOption : takes a single parameter, depending on the provided option value, a corresponding function will be called to deliver specific functionality...
 # Parameter -> option : represent user chosen option from menu interface
 def executeMenuOption(option, tabs, tabsInOrder):
@@ -240,14 +248,14 @@ def executeMenuOption(option, tabs, tabsInOrder):
     elif option == 8:
         importTabs(tabs)
     elif option == 9:
-        print("\nExit")
+        return terminateProgram()
     else:  # in case inputed number less than 1 or greater than 9
         print("\ninvalid input - Try Again")
 
 
 # Function -> Menu : takes no parameter, responsible for handling menu functionality
 def Menu():
-    exit_program = False  # exit_program will severs as a flag variable
+    exitProgram = False  # exitProgram will severs as a flag variable
 
     # Main Data Structures :
     # 1 - Dictionary to store tabs which consists of titles attached to URLs (tabs)
@@ -256,8 +264,8 @@ def Menu():
     tabs = {}
     tabsOrder = []
 
-    # Continue looping while exit_program is false
-    while not exit_program:
+    # Continue looping while exitProgram is false
+    while not exitProgram:
         renderUserInterfaceOptions()  # Display menu option
         # Handling Exceptions
         try:
@@ -266,8 +274,7 @@ def Menu():
         except ValueError:  # If inputed data is not a number
             print("\ninvalid input a number must be entered - Try Again")
 
-        executeMenuOption(chosenOption, tabs, tabsOrder)
-
+        exitProgram = executeMenuOption(chosenOption, tabs, tabsOrder)
         print(tabs)
         print(tabsOrder)
 
