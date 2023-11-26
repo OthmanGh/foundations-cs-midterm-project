@@ -1,9 +1,11 @@
 # Note : most functions will get tabs and tabsInOrder as a parameters/arguments so, instead of commenting multiple time same thing will explain them down here once
+# most functions will work fine within one level of nested tabs....
+# Ouside loops time complexity is O(1) constant time
 # Parameters:
-# tabs : A dictionary containing tab names as keys and corresponding URLs as values
-# tabsInOrder : a list representing the order of tabs
+# tabs : Dictionary to store tabs which consists of titles attached to another dictionary which may consist of 3 main keys url, htmlContent, nestedTab sure each one of them will be attached to values
+# tabsInOrder : List to maintain the order of open tabs (tabsInOrder) which contain titles of opened tabs in order (depend on the way been inputed)
 
-# Function -> renderUserInterFace : takes no parameter, responsible for displaying menu options for the user
+# Function -> renderUserInterFaceOptions : takes no parameter, responsible for displaying menu options for the user
 def renderUserInterfaceOptions():
     print("\n     1. Open Tab")
     print("     2. Close Tab")
@@ -19,7 +21,7 @@ def renderUserInterfaceOptions():
 # Parameter -> title : user entered tab's title
 # Note : these validation condition based on my preference so it doesn't follow any rule and it can be modifyied
 def isTitleValid(title):
-    if len(title) < 2:  # at least contain 3 chars
+    if len(title) < 3:  # at least contain 3 chars
         return False
 
     for char in title:  # Time Complexity : O(n), n length of title
@@ -77,13 +79,13 @@ def isValidIndex(index, tabsInOrder):
 def closeTab(tabs, tabsInOrder):
     index = input("\nindex of tab you wish to close : ")
 
-    if len(tabsInOrder) >= 1: # Check if there is at least one opened tab
+    if len(tabsInOrder) >= 1: # Check if there are at least one opened tab
         if isValidIndex(index, tabsInOrder): # Check if inputed index val is valid
-            idx = int(index) # convert index to number
-            title = tabsInOrder[idx] if len(tabsInOrder[idx]) == 1 else tabsInOrder[idx][0] # check if tab to close has a nested tab
-            del tabs[title] # delete the whole tab
+            idx = int(index) # Convert index to number
+            title = tabsInOrder[idx] if len(tabsInOrder[idx]) == 1 else tabsInOrder[idx][0] # Check if tab inclueds nested tab
+            del tabs[title] # Celete the whole tab
             tabsInOrder.pop(int(index)) # Remove selected tab at its specified index 
-        elif index == '': # user provide no input
+        elif index == '': # User provide no input
             print("\nsince no index provided last tab will be closed")
             del tabs[tabsInOrder[-1]]  # -1 To delete last tab from tabs dictionary
             tabsInOrder.pop() # Remove selected tab
@@ -243,7 +245,7 @@ def saveTabs(tabs):
         with open(path, 'a') as outfile: # json data will be saved in provided directory 
             json.dump(tabs, outfile)  # Json.dump() will transform the Python dictionary to a JSON string 
             
-    except PermissionError:
+    except PermissionError: # Check if directory is not valid
         print("Permission error. Please indicate a valid directory where you have write permissions.")
         
     except Exception as e:
